@@ -179,7 +179,7 @@ class AcrMenuController extends Controller
         $form .= '<input class="form-control" id="class' . $id . '" value="' . @$menu->class . '"/>';
         $form .= '<label>Menüye Bağla</label>';
         $form .= '<select class="form-control" id="parent_id' . $id . '">';
-        $form .= '<option>Ana Menü Olsun</option>';
+        $form .= '<option value="0">Ana Menü Olsun</option>';
         foreach ($ustMenuler as $ustMenu) {
             @$select = $ustMenu->id == $menu->ust_id ? 'selected' : '';
             @$form .= '<option ' . $select . ' value="' . @$ustMenu->id . '">' . @$ustMenu->name . '</option>';
