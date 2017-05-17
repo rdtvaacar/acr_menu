@@ -1,5 +1,4 @@
-#  LARAVEL - ACR FİLE -- FİLE UPLOAD CLASS
-
+#  LARAVEL - ACR MENU
 [Query-File-Upload](https://github.com/blueimp/jQuery-File-Upload): Paketi refarans alarak oluşturulmuştur.
 
 ## Kurulum:
@@ -52,6 +51,10 @@ class Admin
     }
 }
 
+```
+Kernel.php ekle
+```php 
+'admin'      => \App\Http\Middleware\Admin::class
 ```
 acr_file_id: ilişkili tablodan gelmeli örneğin ürünler için kullanacaksanız urun tablonuzda acr_file_id stunu olmalı, acr_file_id değişkeni null gelirse : $acr_file_id = AcrMenu::create($acr_file_id) yeni bir acr_file_id oluşturur.
 ```php 
