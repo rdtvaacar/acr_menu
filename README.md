@@ -17,7 +17,7 @@ Acr\Menu\AcrMenuServiceProviders::class
 ```
 'AcrMenu'      => Acr\Menu\Facades\AcrMenu::class
 ```
-### app\Http\Middleware 
+### app\Http\Middleware Admin.php
 
 ```php 
 PHP
@@ -56,60 +56,46 @@ class Admin
 acr_file_id: ilişkili tablodan gelmeli örneğin ürünler için kullanacaksanız urun tablonuzda acr_file_id stunu olmalı, acr_file_id değişkeni null gelirse : $acr_file_id = AcrMenu::create($acr_file_id) yeni bir acr_file_id oluşturur.
 ```php 
 PHP
- echo AcrMenu::css();  
+ echo AcrMenu::acr_sol_menu(@$tab);  
 ```
-CSS dosyalarını yükler.
-```php 
-PHP
-echo AcrMenu::form()
-```
-Formu yükler
-```php 
-PHP
-echo AcrMenu::js($acr_file_id)
-```
-Java script dosylarını yükler.
 
 ```sql 
 Mysql Tablosu
 
-CREATE TABLE `acr_files` (
+CREATE TABLE `acrmenus` (
   `id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `session_id` varchar(66) COLLATE utf8_turkish_ci DEFAULT NULL,
-  `file_dir` varchar(50) COLLATE utf8_turkish_ci DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `role_id` int(11) DEFAULT NULL,
+  `parent_id` int(11) DEFAULT '0',
+  `sabit` tinyint(4) DEFAULT '0',
+  `goster` int(11) NOT NULL DEFAULT '1',
+  `ozet` tinytext COLLATE utf8_turkish_ci,
+  `main` int(11) DEFAULT '0',
+  `panel` int(11) DEFAULT NULL,
+  `kat` int(11) DEFAULT '1',
+  `aitKat` int(11) DEFAULT NULL,
+  `aciklama` tinytext COLLATE utf8_turkish_ci,
+  `anahtarKelimeler` text COLLATE utf8_turkish_ci,
+  `yeri` tinyint(4) DEFAULT NULL,
+  `sira` int(11) DEFAULT '10',
+  `yorum` tinyint(4) DEFAULT '1',
+  `name` varchar(250) COLLATE utf8_turkish_ci DEFAULT NULL,
+  `class` varchar(60) COLLATE utf8_turkish_ci DEFAULT NULL,
+  `kisaBaslik` varchar(250) COLLATE utf8_turkish_ci DEFAULT NULL,
+  `uzunBaslik` varchar(250) COLLATE utf8_turkish_ci DEFAULT NULL,
+  `yazi` longtext COLLATE utf8_turkish_ci,
+  `acilisTipi` varchar(20) COLLATE utf8_turkish_ci DEFAULT NULL,
+  `link` varchar(1000) COLLATE utf8_turkish_ci DEFAULT NULL,
+  `seoLink` varchar(250) COLLATE utf8_turkish_ci DEFAULT NULL,
+  `bagla` varchar(250) COLLATE utf8_turkish_ci DEFAULT NULL,
+  `album_id` int(11) DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `sil` tinyint(4) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci ROW_FORMAT=COMPACT;
 
--- --------------------------------------------------------
+ALTER TABLE `acrmenus`
+  ADD UNIQUE KEY `menuID` (`id`);
 
---
--- Tablo için tablo yapısı `acr_files_childs`
---
-
-CREATE TABLE `acr_files_childs` (
-  `id` int(11) NOT NULL,
-  `acr_file_id` int(11) DEFAULT NULL,
-  `file_name` varchar(200) COLLATE utf8_turkish_ci DEFAULT NULL,
-  `file_name_org` varchar(200) COLLATE utf8_turkish_ci DEFAULT NULL,
-  `fize_size` varchar(25) COLLATE utf8_turkish_ci DEFAULT NULL,
-  `file_type` varchar(10) COLLATE utf8_turkish_ci DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `sil` tinyint(4) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
-
-ALTER TABLE `acr_files`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `acr_files_childs`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `acr_files`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
-ALTER TABLE `acr_files_childs`
+ALTER TABLE `acrmenus`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ```
-Dosya yolu  /acr_files/acr_file_id
+
