@@ -81,6 +81,7 @@ class AcrMenuController extends Controller
         $veri .= '</ul>';
         return $veri;
     }
+
 //d ad as dsad as das
     function acrMenu($tab, $datas, $parent_id = 0, $limit = 0)
     {
@@ -181,7 +182,7 @@ class AcrMenuController extends Controller
         $form .= '<select class="form-control" id="parent_id' . $id . '">';
         $form .= '<option value="0">Ana Menü Olsun</option>';
         foreach ($ustMenuler as $ustMenu) {
-            @$select = $ustMenu->id == $menu->ust_id ? 'selected' : '';
+            @$select = $ustMenu->id == $menu->parent_id ? 'selected' : '';
             @$form .= '<option ' . $select . ' value="' . @$ustMenu->id . '">' . @$ustMenu->name . '</option>';
         }
         $form .= '</select>';
