@@ -5,38 +5,68 @@
 ## Kurulum:
 #### composer json : 
 ```
-"acr/file": "dev-file"
+"acr/file": "dev-menus"
 ```
 ### CONFİG
 
 #### Providers
 ```
-Acr\Ftr\AcrFtrServiceProviders::class
+Acr\Menu\AcrMenuServiceProviders::class
 ```
 #### Aliases
 ```
-'AcrFtr'      => Acr\Ftr\Facades\AcrFtr::class
+'AcrMenu'      => Acr\Menu\Facades\AcrMenu::class
 ```
-### acr_file_id
+### app\Http\Middleware 
 
 ```php 
 PHP
-$acr_file_id = AcrFtr::create($acr_file_id); 
+namespace App\Http\Middleware;
+
+use Acr\Menu\Model\AcrUser;
+use Closure;
+use Auth;
+
+class Admin
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next)
+    {
+        $user_model = new AcrUser();
+        $isAdmin    = $user_model->where('id', Auth::user()->id)->with([
+            'roles' => function ($query) {
+                $query->where('role_id', 1);
+            }
+        ])->first();
+        // dd($isAdmin->roles->count());
+        if ($isAdmin->roles->count() == 0 || $isAdmin->roles[0]->id != 1) {
+            return redirect('/yetkisiz');
+        }
+        return $next($request);
+    }
+}
+
 ```
-acr_file_id: ilişkili tablodan gelmeli örneğin ürünler için kullanacaksanız urun tablonuzda acr_file_id stunu olmalı, acr_file_id değişkeni null gelirse : $acr_file_id = AcrFtr::create($acr_file_id) yeni bir acr_file_id oluşturur.
+acr_file_id: ilişkili tablodan gelmeli örneğin ürünler için kullanacaksanız urun tablonuzda acr_file_id stunu olmalı, acr_file_id değişkeni null gelirse : $acr_file_id = AcrMenu::create($acr_file_id) yeni bir acr_file_id oluşturur.
 ```php 
 PHP
- echo AcrFtr::css();  
+ echo AcrMenu::css();  
 ```
 CSS dosyalarını yükler.
 ```php 
 PHP
-echo AcrFtr::form()
+echo AcrMenu::form()
 ```
 Formu yükler
 ```php 
 PHP
-echo AcrFtr::js($acr_file_id)
+echo AcrMenu::js($acr_file_id)
 ```
 Java script dosylarını yükler.
 
