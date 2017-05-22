@@ -34,7 +34,7 @@ class AcrMenuController extends Controller
 
     function menu($p = null, $menuler)
     {
-        if (!empty(url()->getRequest()->server())) {
+        if (!empty(url()->getRequest()->server()['REDIRECT_URL'])) {
             $url = url()->getRequest()->server()['REDIRECT_URL'];
         } else {
             $url = '';
