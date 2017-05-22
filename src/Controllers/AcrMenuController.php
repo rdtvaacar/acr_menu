@@ -43,8 +43,7 @@ class AcrMenuController extends Controller
         $veri  .= '<li class="header">İŞLEMLER</li>';
         $satir = 1;
         foreach ($menuler as $menu) {
-            $menuRolExp = explode(",", $menu->roller);
-            $menuV      = array();
+            $menuV = array();
             foreach ($menu->altMenus as $altMenu_id) {
                 $menuV[] = trim($altMenu_id->link);
             }
@@ -72,7 +71,8 @@ class AcrMenuController extends Controller
                 $veri .= '</ul>';
                 $veri .= '</li>';
             } else {
-                $veri .= '<li class="' . $active . '" onclick="load()" style=" border-bottom: rgba(0, 37, 43, 1) 1px solid;">
+                $active2 = $url == trim($menu->link) ? 'active' : '';
+                $veri    .= '<li class="' . $active2 . '" onclick="load()" style=" border-bottom: rgba(0, 37, 43, 1) 1px solid;">
                         <a href="' . $menu->link . '?p=' . $menu->id . '">
                     <i class="' . $menu->class . '"></i>
                     <span>' . $menu->name . '</span>
