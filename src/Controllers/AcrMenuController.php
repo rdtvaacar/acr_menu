@@ -16,9 +16,8 @@ class AcrMenuController extends Controller
         return View('acr_menu::anasayfa', compact('tab'));
     }
 
-    function menuler(Request $request)
+    function menuler()
     {
-
         $menu_model = new AcrMenu();
         $menu_data  = $menu_model->get();
         $menuler    = self::menu_body($menu_data);
@@ -35,6 +34,7 @@ class AcrMenuController extends Controller
 
     function menu($p = null, $menuler)
     {
+        $url   = url()->getRequest()->server()['REDIRECT_URL'];
         $veri  = '<ul class="sidebar-menu">';
         $veri  .= '<li class="header">İŞLEMLER</li>';
         $satir = 1;
@@ -42,13 +42,13 @@ class AcrMenuController extends Controller
             $menuRolExp = explode(",", $menu->roller);
             $menuV      = array();
             foreach ($menu->altMenus as $altMenu_id) {
-                $menuV[] = $altMenu_id->id;
+                $menuV[] = trim($altMenu_id->link);
             }
 
             // $ust_id = DB::table('menu')->insertGetId(array('isim' => $menus));
-            $active = in_array($p, $menuV) ? 'active' : '';
+            $active = in_array($url, $menuV) ? 'active' : '';
             if (count($menu->altMenus) > 0) {
-                $veri .= '<li class="treeview ' . $active . '." style=" border-bottom: rgba(0, 37, 43, 1) 1px solid;">
+                $veri .= '<li class="treeview ' . $active . '" style=" border-bottom: rgba(0, 37, 43, 1) 1px solid;">
                         <a href="#">
                             <i class=" fa ' . $menu->class . '"></i> <span>
                             ' . $menu->name . '</span> <i class="fa fa-angle-left pull-right"></i>
@@ -58,7 +58,7 @@ class AcrMenuController extends Controller
                 foreach ($menu->altMenus as $altMenu) {
                     // DB::table('menu')->insertGetId(array('isim' => $menuT, 'ust_id' => $ust_id, 'link' => $menu));
 
-                    $active2 = $p == $altMenu->id ? 'active' : '';
+                    $active2 = $url == trim($altMenu->link) ? 'active' : '';
                     $veri    .= '<li class="' . $active2 . '">
                                     <a href="' . $altMenu->link . '?p=' . $altMenu->id . '">
                                         <i class="' . $altMenu->class . '"></i>
