@@ -34,7 +34,11 @@ class AcrMenuController extends Controller
 
     function menu($p = null, $menuler)
     {
-        $url   = url()->getRequest()->server()['REDIRECT_URL'];
+        if (!empty(url()->getRequest()->server())) {
+            $url = url()->getRequest()->server()['REDIRECT_URL'];
+        } else {
+            $url = '';
+        }
         $veri  = '<ul class="sidebar-menu">';
         $veri  .= '<li class="header">İŞLEMLER</li>';
         $satir = 1;
