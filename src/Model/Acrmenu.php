@@ -18,4 +18,9 @@ class Acrmenu extends Model
     {
         return $this->hasMany('Acr\Menu\Model\Acrmenu', 'parent_id', 'id');
     }
+
+    function role()
+    {
+        return $this->belongsTo('Acr\Menu\Model\AcrRole');
+    }
 }
