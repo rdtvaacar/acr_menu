@@ -50,7 +50,7 @@ class AcrMenuController extends Controller
             if (count($menu->altMenus) > 0) {
                 $veri .= '<li class="treeview ' . $active . '" style=" border-bottom: rgba(0, 37, 43, 1) 1px solid;">
                         <a href="#">
-                            <i class=" fa ' . $menu->class . '"></i> <span>
+                            <i class="' . $menu->class . '"></i> <span>
                             ' . $menu->name . '</span> <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">';
