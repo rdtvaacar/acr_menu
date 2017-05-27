@@ -118,7 +118,7 @@
                 headers: {'X-XSRF-TOKEN': $_token},
                 type   : 'post',
                 data   : 'id=' + id,
-                url    : 'mainMenuSiraAzalt',
+                url    : '/acr/menu/siraAzalt',
                 success: function (veri) {
                     $('#sira' + id).html(veri);
                 }
@@ -131,7 +131,7 @@
                 headers: {'X-XSRF-TOKEN': $_token},
                 type   : 'post',
                 data   : 'id=' + id,
-                url    : 'mainMenuSiraArttir',
+                url    : '/acr/menu/siraCogalt',
                 success: function (veri) {
                     $('#sira' + id).html(veri);
                 }

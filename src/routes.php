@@ -9,8 +9,10 @@ Route::group(['middleware' => ['web']], function () {
                 Route::post('/duzenle', 'AcrMenuController@duzenle');
                 Route::post('/update', 'AcrMenuController@update');
                 Route::post('/delete', 'AcrMenuController@delete');
-                Route::post('/siraAzalt', 'AcrMenuController@delete');
-                Route::post('/siraCogalt', 'AcrMenuController@delete');
+                Route::post('/siraAzalt', 'AcrMenuController@siraAzalt');
+                Route::post('/siraCogalt', 'AcrMenuController@siraCogalt');
+
+
             });
         });
 

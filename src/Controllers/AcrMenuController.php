@@ -12,28 +12,43 @@ class AcrMenuController extends Controller
 {
     function index(Request $request)
     {
-        $tab = $request->input('tab');
-        return View('acr_menu::anasayfa', compact('tab'));
+
+        return View('acr_menu::anasayfa');
     }
 
     function menuler()
     {
         $menu_model = new AcrMenu();
-        $menu_data  = $menu_model->get();
+        $menu_data  = $menu_model->with('role')->get();
         $menuler    = self::menu_body($menu_data);
 
         return View('acr_menu::menuler', compact('menuler'));
     }
 
-    function acr_sol_menu($tab = null)
+    function acr_sol_menu()
     {
         $menu_model = new AcrMenu();
-        $menuler    = $menu_model->where('parent_id', 0)->with('altMenus')->get();
-        return self::menu($tab, $menuler);
+        if (Auth::check()) {
+            $user_model = new AcrUser();
+            $user       = $user_model->find(Auth::user()->id);
+            foreach ($user->roles as $role) {
+                $role_ids[] = $role->id;
+            }
+            $menuler = $menu_model->where('parent_id', 0)->with([
+                'altMenus', 'role' => function ($query) use ($role_ids) {
+                    $query->whereIn('id', $role_ids);
+                }
+            ])->get();
+        } else {
+            $menuler = $menu_model->where('parent_id', 0)->with('altMenus')->where('role_id', 6)->get();
+        }
+
+        return self::menu($menuler);
     }
 
-    function menu($p = null, $menuler)
+    function menu($menuler)
     {
+
         if (!empty(url()->getRequest()->server()['REDIRECT_URL'])) {
             $url = url()->getRequest()->server()['REDIRECT_URL'];
         } else {
@@ -63,7 +78,7 @@ class AcrMenuController extends Controller
 
                     $active2 = $url == trim($altMenu->link) ? 'active' : '';
                     $veri    .= '<li class="' . $active2 . '">
-                                    <a href="' . $altMenu->link . '?p=' . $altMenu->id . '">
+                                    <a href="' . $altMenu->link . '">
                                         <i class="' . $altMenu->class . '"></i>
                                         ' . $altMenu->name . '</a>
                                 </li>';
@@ -73,7 +88,7 @@ class AcrMenuController extends Controller
             } else {
                 $active2 = $url == trim($menu->link) ? 'active' : '';
                 $veri    .= '<li class="' . $active2 . '" onclick="load()" style=" border-bottom: rgba(0, 37, 43, 1) 1px solid;">
-                        <a href="' . $menu->link . '?p=' . $menu->id . '">
+                        <a href="' . $menu->link . '">
                     <i class="' . $menu->class . '"></i>
                     <span>' . $menu->name . '</span>
                     </a>
@@ -87,10 +102,10 @@ class AcrMenuController extends Controller
     }
 
 //d ad as dsad as das
-    function acrMenu($tab, $datas, $parent_id = 0, $limit = 0)
+    /*function acrMenu($tab, $datas, $parent_id = 0, $limit = 0)
     {
         $user_model = new AcrUser();
-        $roles      = $user_model->find(Auth::user()->id)->roles()->get();
+        $roles      = $user_model->where('id', Auth::user()->id)->roles()->get();
         foreach ($roles as $role) {
             $role_ids[] = $role->id;
         }
@@ -109,7 +124,7 @@ class AcrMenuController extends Controller
         }
         $tree .= '</ul>';
         return $tree;
-    }
+    }*/
 
     function delete(Request $request)
     {
@@ -126,6 +141,7 @@ class AcrMenuController extends Controller
             $veri .= self::menu_satir($menu, $satir);
             $satir++;
         }
+
         return $veri;
 
     }
@@ -140,6 +156,7 @@ class AcrMenuController extends Controller
 
     function menu_satir_td($menu, $satir)
     {
+
         $veri = '<td>' . $satir . '</td>';
         $veri .= '<td>' . $menu->name . '</td>';
         $veri .= '<td>' . $menu->role->name . '</td>';
@@ -155,6 +172,26 @@ class AcrMenuController extends Controller
         $veri .= '<button onclick="mainMenuSil(' . $menu->id . ')" class="btn btn-danger" style=" float: right;">SİL</button>';
         $veri .= '</td>';
         return $veri;
+    }
+
+    function siraCogalt(Request $request)
+    {
+        $menu_id    = $request->input('id');
+        $menu_model = new AcrMenu();
+        $menu       = $menu_model->find($menu_id);
+        $menu->sira = $menu->sira + 1;
+        $menu->save();
+        return $menu->sira;
+    }
+
+    function siraAzalt(Request $request)
+    {
+        $menu_id    = $request->input('id');
+        $menu_model = new AcrMenu();
+        $menu       = $menu_model->find($menu_id);
+        $menu->sira = $menu->sira - 1;
+        $menu->save();
+        return $menu->sira;
     }
 
     function duzenle(Request $request)
