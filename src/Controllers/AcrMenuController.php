@@ -7,6 +7,7 @@ use Acr\Menu\Model\AcrRole;
 use Acr\Menu\Model\AcrUser;
 use Auth;
 use Illuminate\Http\Request;
+use DB;
 
 class AcrMenuController extends Controller
 {
@@ -34,16 +35,45 @@ class AcrMenuController extends Controller
             foreach ($user->roles as $role) {
                 $role_ids[] = $role->id;
             }
-            $menuler = $menu_model->where('parent_id', 0)->with([
-                'altMenus', 'role' => function ($query) use ($role_ids) {
-                    $query->whereIn('id', $role_ids);
-                }
-            ])->get();
+            $menuler = $menu_model->where('parent_id', 0)->with('altMenus')->whereIn('role_id', $role_ids)->get();
         } else {
             $menuler = $menu_model->where('parent_id', 0)->with('altMenus')->where('role_id', 6)->get();
         }
-
         return self::menu($menuler);
+    }
+
+    function users(Request $request)
+    {
+        $s          = $request->input('search');
+        $user_model = new AcrUser();
+        $role_model = new AcrRole();
+        $roles      = $role_model->get();
+        if (!empty($s) && strlen($s) > 3) {
+            $users = $user_model->with('roles')->orWhere('name', 'like', "%$s%")->orWhere('email', 'like', "%$s%")->orWhere('username', 'like', "%$s%")->paginate(50);
+        } else {
+            $users = $user_model->with('roles')->paginate(50);
+        }
+        foreach ($users as $user) {
+            $role_ids[$user->id][] = [];
+            foreach ($user->roles as $role) {
+                $role_ids[$user->id][] = $role->id;
+            }
+        }
+        return View('acr_menu::users', compact('users', 'roles', 'role_ids', 's'));
+    }
+
+    function role_update(Request $request)
+    {
+        $user_role = explode("_", $request->input('user_role'));
+        $user_id   = $user_role[0];
+        $role_id   = $user_role[1];
+        $sorgu     = DB::table('role_user')->where('user_id', $user_id)->where('role_id', $role_id);
+        if ($sorgu->count() > 0) {
+            $sorgu->delete();
+        } else {
+            DB::table('role_user')->insert(['user_id' => $user_id, 'role_id' => $role_id]);
+        }
+
     }
 
     function menu($menuler)

@@ -11,7 +11,10 @@ Route::group(['middleware' => ['web']], function () {
                 Route::post('/delete', 'AcrMenuController@delete');
                 Route::post('/siraAzalt', 'AcrMenuController@siraAzalt');
                 Route::post('/siraCogalt', 'AcrMenuController@siraCogalt');
-
+                Route::get('/users', 'AcrMenuController@users');
+                Route::post('/users/search', 'AcrMenuController@users');
+                Route::get('/users/search', 'AcrMenuController@users');
+                Route::post('/users/role/update', 'AcrMenuController@role_update');
 
             });
         });
