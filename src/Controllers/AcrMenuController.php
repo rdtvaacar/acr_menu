@@ -92,7 +92,6 @@ class AcrMenuController extends Controller
             foreach ($menu->altMenus as $altMenu_id) {
                 $menuV[] = trim($altMenu_id->link);
             }
-
             // $ust_id = DB::table('menu')->insertGetId(array('isim' => $menus));
             $active = in_array($url, $menuV) ? 'active' : '';
             if (count($menu->altMenus) > 0) {
@@ -102,7 +101,6 @@ class AcrMenuController extends Controller
                             ' . $menu->name . '</span> <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">';
-
                 foreach ($menu->altMenus as $altMenu) {
                     // DB::table('menu')->insertGetId(array('isim' => $menuT, 'ust_id' => $ust_id, 'link' => $menu));
 
