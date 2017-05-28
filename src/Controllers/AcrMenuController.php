@@ -35,9 +35,9 @@ class AcrMenuController extends Controller
             foreach ($user->roles as $role) {
                 $role_ids[] = $role->id;
             }
-            $menuler = $menu_model->where('parent_id', 0)->with('altMenus')->whereIn('role_id', $role_ids)->get();
+            $menuler = $menu_model->where('parent_id', 0)->with('altMenus')->whereIn('role_id', $role_ids)->orderBy('sira')->get();
         } else {
-            $menuler = $menu_model->where('parent_id', 0)->with('altMenus')->where('role_id', 6)->get();
+            $menuler = $menu_model->where('parent_id', 0)->with('altMenus')->where('role_id', 6)->orderBy('sira')->get();
         }
         return self::menu($menuler);
     }
