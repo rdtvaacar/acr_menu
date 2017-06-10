@@ -1,7 +1,4 @@
 @extends('acr_menu.index')
-@section('header')
-    <link rel="stylesheet" href="/plugins/datatables/dataTables.bootstrap.css">
-@stop
 @section('acr_menu')
     <section class="content">
         <div class="row">
