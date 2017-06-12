@@ -5,7 +5,7 @@ namespace Acr\Menu\Model;
 use Illuminate\Database\Eloquent\Model;
 use Auth;
 
-class Acrmenu extends Model
+class AcrMenu extends Model
 
 {
     /**
@@ -16,7 +16,7 @@ class Acrmenu extends Model
 
     function altMenus()
     {
-        return $this->hasMany('Acr\Menu\Model\Acrmenu', 'parent_id', 'id');
+        return $this->hasMany('Acr\Menu\Model\AcrMenu', 'parent_id', 'id');
     }
 
     function role()
