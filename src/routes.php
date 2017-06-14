@@ -1,6 +1,7 @@
 <?php
 Route::group(['middleware' => ['web']], function () {
     Route::group(['namespace' => 'Acr\Menu\Controllers', 'prefix' => 'acr/menu'], function () {
+        Route::post('/ara', 'AcrMenuController@menu_ara');
         Route::get('/', 'AcrMenuController@index');
         Route::group(['middleware' => ['auth']], function () {
             Route::group(['middleware' => ['admin']], function () {
@@ -15,7 +16,6 @@ Route::group(['middleware' => ['web']], function () {
                 Route::post('/users/search', 'AcrMenuController@users');
                 Route::get('/users/search', 'AcrMenuController@users');
                 Route::post('/users/role/update', 'AcrMenuController@role_update');
-
             });
         });
 
