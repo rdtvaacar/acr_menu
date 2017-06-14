@@ -11,6 +11,11 @@ use DB;
 
 class AcrMenuController extends Controller
 {
+    function menu_ara(Request $request)
+    {
+        return self::acr_sol_menu($request->ara);
+    }
+
     function roles()
     {
         $user_model = new AcrUser();
@@ -36,7 +41,7 @@ class AcrMenuController extends Controller
         return View('acr_menu::menuler', compact('menuler'));
     }
 
-    function acr_sol_menu()
+    function acr_sol_menu($ara = null)
     {
         $menu_model = new AcrMenu();
         if (Auth::check()) {
@@ -45,19 +50,56 @@ class AcrMenuController extends Controller
             foreach ($user->roles as $role) {
                 $role_ids[] = $role->id;
             }
-            $menuler = $menu_model->where('parent_id', 0)->with([
-                'altMenus' => function ($q) {
-                    $q->orderBy('sira');
-                }
-            ])->whereIn('role_id', $role_ids)->orderBy('sira')->get();
+            if (empty($ara)) {
+                $menuler = $menu_model->where('parent_id', 0)->with([
+                    'altMenus' => function ($q) {
+                        $q->orderBy('sira');
+                    }
+                ])->whereIn('role_id', $role_ids)->orderBy('sira')->get();
+            } else {
+                $menuler = $menu_model->where('parent_id', 0)->where('name', 'like', "%$ara%")->with([
+                    'altMenus' => function ($q) use ($ara) {
+                        $q->orderBy('sira');
+                        $q->where('name', 'like', "%$ara%");
+                    }
+                ])->whereIn('role_id', $role_ids)->orderBy('sira')->get();
+            }
+
         } else {
-            $menuler = $menu_model->where('parent_id', 0)->with([
-                'altMenus' => function ($q) {
-                    $q->orderBy('sira');
-                }
-            ])->where('role_id', 6)->orderBy('sira')->get();
+            if (empty($ara)) {
+                $menuler = $menu_model->where('parent_id', 0)->with([
+                    'altMenus' => function ($q) {
+                        $q->orderBy('sira');
+                    }
+                ])->where('role_id', 6)->orderBy('sira')->get();
+            } else {
+                $menuler = $menu_model->where('parent_id', 0)->where('name', 'like', "%$ara%")->with([
+                    'altMenus' => function ($q) use ($ara) {
+                        $q->orderBy('sira');
+                        $q->where('name', 'like', "%$ara%");
+
+                    }
+                ])->where('role_id', 6)->orderBy('sira')->get();
+            }
+
         }
+
         return self::menu($menuler);
+    }
+
+    function search_form()
+    {
+        $search = '<div method="post" action="/acr/menu/ara_btn" class="sidebar-form">
+        <div class="input-group">
+          <input type="text" id="acr_menu_ara" class="form-control" placeholder="İşlemlerde Ara...">
+              <span class="input-group-btn">
+                <div  name="search" id="search-btn" class="btn btn-flat">
+                  <i class="fa fa-search"></i>
+                </div>
+              </span>
+        </div>
+      </div>';
+        return $search;
     }
 
     function users(Request $request)
@@ -144,6 +186,7 @@ class AcrMenuController extends Controller
             $menuV = '';
         }
         $veri .= '</ul>';
+        $veri .= '<div id="sidebar_menu_search"></div>';
         return $veri;
     }
 
