@@ -115,7 +115,12 @@ class AcrMenuController extends Controller
         $role_model = new AcrRole();
         $roles      = $role_model->get();
         if (!empty($s)) {
-            $users = $user_model->with('roles')->orWhere('id', $s)->orWhere('name', 'like', "%$s%")->orWhere('email', 'like', "%$s%")->orWhere('username', 'like', "%$s%")->paginate(50);
+            if (is_numeric($s)) {
+                $users = $user_model->with('roles')->orWhere('id', $s)->paginate(50);
+            } else {
+                $users = $user_model->with('roles')->orWhere('id', $s)->orWhere('name', 'like', "%$s%")->orWhere('email', 'like', "%$s%")->orWhere('username', 'like', "%$s%")->paginate(50);
+
+            }
         } else {
             $users = $user_model->with('roles')->paginate(50);
         }
