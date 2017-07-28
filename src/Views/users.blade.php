@@ -23,12 +23,14 @@
                     <div class="box-body">
                         <table class="table table-hover">
                             <tr>
+                                <th>UserID</th>
                                 <th>User</th>
                                 <th>Email</th>
                                 <th>Role</th>
                             </tr>
                             @foreach($users as $user)
                                 <tr>
+                                    <td>{{$user->id}}</td>
                                     <td><a href="/admin/">{{$user->name}}</a></td>
                                     <td>{{$user->email}}</td>
                                     <td>
