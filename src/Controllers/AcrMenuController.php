@@ -11,6 +11,12 @@ use DB;
 
 class AcrMenuController extends Controller
 {
+
+    function user_login(Request $request)
+    {
+        Auth::loginUsingId($request->user_id);
+    }
+
     function menu_ara(Request $request)
     {
         return self::acr_sol_menu($request->ara);

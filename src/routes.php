@@ -16,6 +16,7 @@ Route::group(['middleware' => ['web']], function () {
                 Route::post('/users/search', 'AcrMenuController@users');
                 Route::get('/users/search', 'AcrMenuController@users');
                 Route::post('/users/role/update', 'AcrMenuController@role_update');
+                Route::get('/admin/user/login', 'AcrMenuController@user_login');
             });
         });
 
