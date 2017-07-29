@@ -24,6 +24,7 @@ class AcrMenuController extends Controller
 
     function roles()
     {
+
         $user_model = new AcrUser();
         $user       = $user_model->where('id', Auth::user()->id)->with('roles')->first();
         $roleIds =[];
