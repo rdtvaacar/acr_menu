@@ -26,6 +26,7 @@ class AcrMenuController extends Controller
     {
         $user_model = new AcrUser();
         $user       = $user_model->where('id', Auth::user()->id)->with('roles')->first();
+        $roleIds =[];
         foreach ($user->roles as $role) {
             $roleIds[] = $role->id;
         }
