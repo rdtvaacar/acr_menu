@@ -45,7 +45,6 @@ class AcrMenuController extends Controller
         $menu_model = new AcrMenu();
         $menu_data  = $menu_model->with('role')->get();
         $menuler    = self::menu_body($menu_data);
-
         return View('acr_menu::menuler', compact('menuler'));
     }
 
