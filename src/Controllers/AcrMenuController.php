@@ -11,6 +11,13 @@ use DB;
 
 class AcrMenuController extends Controller
 {
+    function change_user_pw(Request $request)
+    {
+        $user_model = new AcrUser();
+        $sifre      = $request->pw;
+        $user_model->where('id', $request->user_id)->update(['pass' => $sifre, 'password' => bcrypt($sifre)]);
+    }
+
 
     function user_login(Request $request)
     {
