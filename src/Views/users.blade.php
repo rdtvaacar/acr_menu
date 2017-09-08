@@ -35,7 +35,9 @@
                             @foreach($users as $user)
                                 <tr>
                                     <td>{{$user->id}}</td>
-                                    <td><a href="/admin/user/login?user_id={{$user->id}}">{{$user->name}}</a></td>
+                                    <td>
+                                        <a href="/acr/menu/admin/user/login?user_id={{$user->id}}">{{$user->name}}</a>
+                                    </td>
                                     <td>
                                         {{$user->email}}<br>
                                         {{$user->username}}

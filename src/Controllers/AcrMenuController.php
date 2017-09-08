@@ -15,13 +15,19 @@ class AcrMenuController extends Controller
     {
         $user_model = new AcrUser();
         $sifre      = $request->pw;
+
         $user_model->where('id', $request->user_id)->update(['pass' => $sifre, 'password' => bcrypt($sifre)]);
     }
 
-
     function user_login(Request $request)
     {
-        Auth::loginUsingId($request->user_id);
+        $user_id    = $request->user_id;
+        $user_model = new AcrUser();
+        $user_model->where('id', $user_id)->update([
+            'son_giris' => date('Y-m-d H:i'),
+            'ip'        => $request->ip()
+        ]);
+        Auth::loginUsingId($user_id);
     }
 
     function menu_ara(Request $request)
@@ -34,7 +40,7 @@ class AcrMenuController extends Controller
 
         $user_model = new AcrUser();
         $user       = $user_model->where('id', Auth::user()->id)->with('roles')->first();
-        $roleIds =[];
+        $roleIds    = [];
         foreach ($user->roles as $role) {
             $roleIds[] = $role->id;
         }
