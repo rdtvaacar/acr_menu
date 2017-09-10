@@ -37,10 +37,13 @@
                                     <td>{{$user->id}}</td>
                                     <td>
                                         <a href="/acr/menu/admin/user/login?user_id={{$user->id}}">{{$user->name}}</a>
+                                        <br>
+                                        {{$user->tel}}
                                     </td>
                                     <td>
                                         {{$user->email}}<br>
                                         {{$user->username}}
+
                                     </td>
                                     <td>
                                         <div style="position: relative;">
