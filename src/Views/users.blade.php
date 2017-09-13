@@ -30,6 +30,7 @@
                                 <th>User</th>
                                 <th>Email</th>
                                 <th>Şifre</th>
+                                <th>GÖNDER</th>
                                 <th>Role</th>
                             </tr>
                             @foreach($users as $user)
@@ -43,7 +44,6 @@
                                     <td>
                                         {{$user->email}}<br>
                                         {{$user->username}}
-
                                     </td>
                                     <td>
                                         <div style="position: relative;">
@@ -52,6 +52,11 @@
                                                    id="password_{{$user->id}}" class=" form-control">
                                             <div onclick="pw_goster({{$user->id}})" style="float: right; font-size: 24px;"><span class="glyphicon glyphicon-eye-open"></span></div>
                                         </div>
+
+                                    </td>
+                                    <td>
+                                        <a  href="/sifremiUnuttum?username={{$user->username}}"> <img src="/icon/key2.png"/></a>
+                                        <div id="pass_send_div_{{$user->id}}"></div>
                                     </td>
                                     <td>
                                         <div class="btn-group" data-toggle="buttons">
@@ -102,6 +107,7 @@
                 }
             });
         }
+
 
         function pw_goster(user_id) {
             $('#password_mask_' + user_id).toggle();

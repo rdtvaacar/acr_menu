@@ -8,9 +8,12 @@ use Acr\Menu\Model\AcrUser;
 use Auth;
 use Illuminate\Http\Request;
 use DB;
+use App\MesajController;
 
 class AcrMenuController extends Controller
 {
+
+
     function change_user_pw(Request $request)
     {
         $user_model = new AcrUser();
