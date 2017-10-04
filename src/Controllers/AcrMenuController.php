@@ -26,9 +26,9 @@ class AcrMenuController extends Controller
     {
         $user_id    = $request->user_id;
         $user_model = new AcrUser();
-        $user_model->where('id', $user_id)->update([
+        $user_model->where('id', Auth::user()->id)->update([
             'son_giris' => date('Y-m-d H:i'),
-            'ip'        => $request->ip()
+            'ip' => $request->ip()
         ]);
         Auth::loginUsingId($user_id);
     }
@@ -353,11 +353,11 @@ class AcrMenuController extends Controller
         $menu_model = new AcrMenu();
 
         $data  = array(
-            'name'      => $request->input('name'),
-            'link'      => $request->input('link'),
-            'class'     => $request->input('class'),
+            'name' => $request->input('name'),
+            'link' => $request->input('link'),
+            'class' => $request->input('class'),
             'parent_id' => $request->input('parent_id'),
-            'role_id'   => $request->input('role_id'),
+            'role_id' => $request->input('role_id'),
 
         );
         $satir = '<span class="glyphicon glyphicon-refresh" class="tool" title="Sayfa Yenileme Gerektirir"></span>';
