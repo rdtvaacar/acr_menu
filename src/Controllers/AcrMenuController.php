@@ -8,13 +8,29 @@ use Acr\Menu\Model\AcrUser;
 use Auth;
 use Illuminate\Http\Request;
 use DB;
+use App\MesajController;
 
 class AcrMenuController extends Controller
 {
 
+
+    function change_user_pw(Request $request)
+    {
+        $user_model = new AcrUser();
+        $sifre      = $request->pw;
+
+        $user_model->where('id', $request->user_id)->update(['pass' => $sifre, 'password' => bcrypt($sifre)]);
+    }
+
     function user_login(Request $request)
     {
-        Auth::loginUsingId($request->user_id);
+        $user_id    = $request->user_id;
+        $user_model = new AcrUser();
+        $user_model->where('id', Auth::user()->id)->update([
+            'son_giris' => date('Y-m-d H:i'),
+            'ip' => $request->ip()
+        ]);
+        Auth::loginUsingId($user_id);
     }
 
     function menu_ara(Request $request)
@@ -27,7 +43,7 @@ class AcrMenuController extends Controller
 
         $user_model = new AcrUser();
         $user       = $user_model->where('id', Auth::user()->id)->with('roles')->first();
-        $roleIds =[];
+        $roleIds    = [];
         foreach ($user->roles as $role) {
             $roleIds[] = $role->id;
         }
@@ -45,7 +61,6 @@ class AcrMenuController extends Controller
         $menu_model = new AcrMenu();
         $menu_data  = $menu_model->with('role')->get();
         $menuler    = self::menu_body($menu_data);
-
         return View('acr_menu::menuler', compact('menuler'));
     }
 
@@ -151,13 +166,12 @@ class AcrMenuController extends Controller
 
     function menu($menuler)
     {
-
-        if (!empty(url()->getRequest()->server()['REDIRECT_URL'])) {
-            $url = url()->getRequest()->server()['REDIRECT_URL'];
+        if (!empty(url()->getRequest()->server()['REDIRECT_REDIRECT_SCRIPT_URL'])) {
+            $url = url()->getRequest()->server()['REDIRECT_REDIRECT_SCRIPT_URL'];
         } else {
             $url = '/';
         }
-        $veri  = '<ul class="sidebar-menu">';
+        $veri  = '<ul class="sidebar-menu tree" data-widget="tree">';
         $veri  .= '<li class="header">İŞLEMLER</li>';
         $satir = 1;
         foreach ($menuler as $menu) {
@@ -338,11 +352,11 @@ class AcrMenuController extends Controller
         $menu_model = new AcrMenu();
 
         $data  = array(
-            'name'      => $request->input('name'),
-            'link'      => $request->input('link'),
-            'class'     => $request->input('class'),
+            'name' => $request->input('name'),
+            'link' => $request->input('link'),
+            'class' => $request->input('class'),
             'parent_id' => $request->input('parent_id'),
-            'role_id'   => $request->input('role_id'),
+            'role_id' => $request->input('role_id'),
 
         );
         $satir = '<span class="glyphicon glyphicon-refresh" class="tool" title="Sayfa Yenileme Gerektirir"></span>';
