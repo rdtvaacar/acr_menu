@@ -9,6 +9,7 @@ use Auth;
 use Illuminate\Http\Request;
 use DB;
 use App\MesajController;
+use URL;
 
 class AcrMenuController extends Controller
 {
@@ -18,7 +19,6 @@ class AcrMenuController extends Controller
     {
         $user_model = new AcrUser();
         $sifre      = $request->pw;
-
         $user_model->where('id', $request->user_id)->update(['pass' => $sifre, 'password' => bcrypt($sifre)]);
     }
 
@@ -166,11 +166,12 @@ class AcrMenuController extends Controller
 
     function menu($menuler)
     {
-        if (!empty(url()->getRequest()->server()['REDIRECT_REDIRECT_SCRIPT_URL'])) {
-            $url = url()->getRequest()->server()['REDIRECT_REDIRECT_SCRIPT_URL'];
+        if (!empty(URL::current())) {
+            $url = str_replace([$_SERVER['HTTP_HOST'], 'http://', 'https://'], ['', '', ''], URL::current());
         } else {
             $url = '/';
         }
+       
         $veri  = '<ul class="sidebar-menu tree" data-widget="tree">';
         $veri  .= '<li class="header">İŞLEMLER</li>';
         $satir = 1;
