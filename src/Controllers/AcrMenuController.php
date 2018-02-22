@@ -94,7 +94,7 @@ class AcrMenuController extends Controller
                     'altMenus' => function ($q) {
                         $q->orderBy('sira');
                     }
-                ])->where('role_id', 6)->orderBy('sira')->get();
+                ])->whereIn('role_id', [6, 8])->orderBy('sira')->get();
             } else {
                 $menuler = $menu_model->where('parent_id', 0)->where('name', 'like', "%$ara%")->with([
                     'altMenus' => function ($q) use ($ara) {
@@ -102,7 +102,7 @@ class AcrMenuController extends Controller
                         $q->where('name', 'like', "%$ara%");
 
                     }
-                ])->where('role_id', 6)->orderBy('sira')->get();
+                ])->whereIn('role_id', [6, 8])->orderBy('sira')->get();
             }
 
         }
@@ -171,7 +171,6 @@ class AcrMenuController extends Controller
         } else {
             $url = '/';
         }
-       
         $veri  = '<ul class="sidebar-menu tree" data-widget="tree">';
         $veri  .= '<li class="header">İŞLEMLER</li>';
         $satir = 1;
