@@ -32,6 +32,8 @@
                                 <th>Şifre</th>
                                 <th>GÖNDER</th>
                                 <th>Role</th>
+                                <th>Üye Sil</th>
+
                             </tr>
                             @foreach($users as $user)
                                 <tr>
@@ -55,7 +57,7 @@
 
                                     </td>
                                     <td>
-                                        <a  href="/sifremiUnuttum?username={{$user->username}}"> <img src="/icon/key2.png"/></a>
+                                        <a href="/sifremiUnuttum?username={{$user->username}}"> <img src="/icon/key2.png"/></a>
                                         <div id="pass_send_div_{{$user->id}}"></div>
                                     </td>
                                     <td>
@@ -67,6 +69,9 @@
                                                 </label>
                                             @endforeach
                                         </div>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-danger" href="/uyelik_bitir?token={{$user->remember_token}}&user_id={{$user->id}}">SİL</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -88,7 +93,7 @@
             var pw = $('#password_' + user_id).val();
             $.ajax({
                 type: 'post',
-                url : '/acr/menu/users/change/pw',
+                url: '/acr/menu/users/change/pw',
                 data: 'user_id=' + user_id + '&pw=' + pw,
             });
         }
@@ -97,11 +102,12 @@
             user_role = $(this).val();
             county_get(user_role);
         });
+
         function county_get(city_id) {
             $.ajax({
-                type   : 'post',
-                url    : '/acr/menu/users/role/update',
-                data   : 'user_role=' + user_role,
+                type: 'post',
+                url: '/acr/menu/users/role/update',
+                data: 'user_role=' + user_role,
                 success: function () {
 
                 }
