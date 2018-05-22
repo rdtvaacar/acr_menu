@@ -19,7 +19,10 @@ class AcrMenuController extends Controller
     {
         $user_model = new AcrUser();
         $sifre      = $request->pw;
-        $user_model->where('id', $request->user_id)->update(['pass' => $sifre, 'password' => bcrypt($sifre)]);
+        $user_model->where('id', $request->user_id)->update([
+            'pass'     => $sifre,
+            'password' => bcrypt($sifre)
+        ]);
     }
 
     function user_login(Request $request)
@@ -28,7 +31,7 @@ class AcrMenuController extends Controller
         $user_model = new AcrUser();
         $user_model->where('id', Auth::user()->id)->update([
             'son_giris' => date('Y-m-d H:i'),
-            'ip' => $request->ip()
+            'ip'        => $request->ip()
         ]);
         Auth::loginUsingId($user_id);
     }
@@ -80,12 +83,7 @@ class AcrMenuController extends Controller
                     }
                 ])->whereIn('role_id', $role_ids)->orderBy('sira')->get();
             } else {
-                $menuler = $menu_model->where('parent_id', 0)->where('name', 'like', "%$ara%")->with([
-                    'altMenus' => function ($q) use ($ara) {
-                        $q->orderBy('sira');
-                        $q->where('name', 'like', "%$ara%");
-                    }
-                ])->whereIn('role_id', $role_ids)->orderBy('sira')->get();
+                $menuler = $menu_model->where('name', 'like', "%$ara%")->whereIn('role_id', $role_ids)->orderBy('sira')->get();
             }
 
         } else {
@@ -94,15 +92,15 @@ class AcrMenuController extends Controller
                     'altMenus' => function ($q) {
                         $q->orderBy('sira');
                     }
-                ])->whereIn('role_id', [6, 8])->orderBy('sira')->get();
+                ])->whereIn('role_id', [
+                    6,
+                    8
+                ])->orderBy('sira')->get();
             } else {
-                $menuler = $menu_model->where('parent_id', 0)->where('name', 'like', "%$ara%")->with([
-                    'altMenus' => function ($q) use ($ara) {
-                        $q->orderBy('sira');
-                        $q->where('name', 'like', "%$ara%");
-
-                    }
-                ])->whereIn('role_id', [6, 8])->orderBy('sira')->get();
+                $menuler = $menu_model->orderBy('sira')->where('name', 'like', "%$ara%")->whereIn('role_id', [
+                    6,
+                    8
+                ])->get();
             }
 
         }
@@ -159,7 +157,10 @@ class AcrMenuController extends Controller
         if ($sorgu->count() > 0) {
             $sorgu->delete();
         } else {
-            DB::table('role_user')->insert(['user_id' => $user_id, 'role_id' => $role_id]);
+            DB::table('role_user')->insert([
+                'user_id' => $user_id,
+                'role_id' => $role_id
+            ]);
         }
 
     }
@@ -167,7 +168,15 @@ class AcrMenuController extends Controller
     function menu($menuler)
     {
         if (!empty(URL::current())) {
-            $url = str_replace([$_SERVER['HTTP_HOST'], 'http://', 'https://'], ['', '', ''], URL::current());
+            $url = str_replace([
+                $_SERVER['HTTP_HOST'],
+                'http://',
+                'https://'
+            ], [
+                '',
+                '',
+                ''
+            ], URL::current());
         } else {
             $url = '/';
         }
@@ -217,7 +226,7 @@ class AcrMenuController extends Controller
         return $veri;
     }
 
-//d ad as dsad as das
+    //d ad as dsad as das
     /*function acrMenu($tab, $datas, $parent_id = 0, $limit = 0)
     {
         $user_model = new AcrUser();
@@ -352,11 +361,11 @@ class AcrMenuController extends Controller
         $menu_model = new AcrMenu();
 
         $data  = array(
-            'name' => $request->input('name'),
-            'link' => $request->input('link'),
-            'class' => $request->input('class'),
+            'name'      => $request->input('name'),
+            'link'      => $request->input('link'),
+            'class'     => $request->input('class'),
             'parent_id' => $request->input('parent_id'),
-            'role_id' => $request->input('role_id'),
+            'role_id'   => $request->input('role_id'),
 
         );
         $satir = '<span class="glyphicon glyphicon-refresh" class="tool" title="Sayfa Yenileme Gerektirir"></span>';
