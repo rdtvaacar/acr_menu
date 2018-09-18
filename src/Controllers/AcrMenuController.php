@@ -78,8 +78,9 @@ class AcrMenuController extends Controller
             }
             if (empty($ara)) {
                 $menuler = $menu_model->where('parent_id', 0)->with([
-                    'altMenus' => function ($q) {
+                    'altMenus' => function ($q) use ($role_ids) {
                         $q->orderBy('sira');
+                        $q->whereIn('role_id', $role_ids);
                     }
                 ])->whereIn('role_id', $role_ids)->orderBy('sira')->get();
             } else {
