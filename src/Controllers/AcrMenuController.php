@@ -62,7 +62,7 @@ class AcrMenuController extends Controller
     function menuler()
     {
         $menu_model = new AcrMenu();
-        $menu_data  = $menu_model->with('role')->get();
+        $menu_data  = $menu_model->with('role')->with('ust_menu')->get();
         $menuler    = self::menu_body($menu_data);
         return View('acr_menu::menuler', compact('menuler'));
     }
@@ -285,6 +285,7 @@ class AcrMenuController extends Controller
 
         $veri = '<td>' . $satir . '</td>';
         $veri .= '<td>' . $menu->name . '</td>';
+        $veri .= '<td>' . $menu->ust_menu->name . '</td>';
         $veri .= '<td>' . $menu->role->name . '</td>';
         $veri .= '<td>' . $menu->link . '</td>';
         $veri .= '<td>' . $menu->class . '</td>';

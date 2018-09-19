@@ -23,4 +23,9 @@ class AcrMenu extends Model
     {
         return $this->belongsTo('Acr\Menu\Model\AcrRole');
     }
+
+    function ust_menu()
+    {
+        return $this->hasOne('Acr\Menu\Model\AcrMenu', 'id', 'parent_id');
+    }
 }

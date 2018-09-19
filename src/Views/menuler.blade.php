@@ -16,6 +16,7 @@
                 <tr>
                     <th>NO</th>
                     <th>Başlık</th>
+                    <th>Üst Başlık</th>
                     <th>Roller</th>
                     <th>Link</th>
                     <th>Class</th>
