@@ -285,7 +285,7 @@ class AcrMenuController extends Controller
 
         $veri = '<td>' . $satir . '</td>';
         $veri .= '<td>' . $menu->name . '</td>';
-        $veri .= '<td>' . $menu->ust_menu->name . '</td>';
+        $veri .= '<td>' . @$menu->ust_menu->name . '</td>';
         $veri .= '<td>' . $menu->role->name . '</td>';
         $veri .= '<td>' . $menu->link . '</td>';
         $veri .= '<td>' . $menu->class . '</td>';
