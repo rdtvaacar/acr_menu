@@ -5,8 +5,6 @@ namespace Acr\Menu\Controllers;
 use Acr\Menu\Model\AcrMenu;
 use Acr\Menu\Model\AcrRole;
 use Acr\Menu\Model\AcrUser;
-use App\Role_user;
-use App\User_users;
 use Auth;
 use Illuminate\Http\Request;
 use DB;
@@ -64,7 +62,7 @@ class AcrMenuController extends Controller
     function menuler()
     {
         $menu_model = new AcrMenu();
-        $menu_data  = $menu_model->with('role')->get();
+        $menu_data  = $menu_model->with('role')->with('ust_menu')->get();
         $menuler    = self::menu_body($menu_data);
         return View('acr_menu::menuler', compact('menuler'));
     }
@@ -153,15 +151,14 @@ class AcrMenuController extends Controller
 
     function role_update(Request $request)
     {
-        $model     = new Role_user();
         $user_role = explode("_", $request->input('user_role'));
         $user_id   = $user_role[0];
         $role_id   = $user_role[1];
-        $sorgu     = $model->where('user_id', $user_id)->where('role_id', $role_id);
+        $sorgu     = DB::table('role_user')->where('user_id', $user_id)->where('role_id', $role_id);
         if ($sorgu->count() > 0) {
             $sorgu->delete();
         } else {
-            $model->insert([
+            DB::table('role_user')->insert([
                 'user_id' => $user_id,
                 'role_id' => $role_id
             ]);
@@ -288,6 +285,7 @@ class AcrMenuController extends Controller
 
         $veri = '<td>' . $satir . '</td>';
         $veri .= '<td>' . $menu->name . '</td>';
+        $veri .= '<td>' . @$menu->ust_menu->name . '</td>';
         $veri .= '<td>' . $menu->role->name . '</td>';
         $veri .= '<td>' . $menu->link . '</td>';
         $veri .= '<td>' . $menu->class . '</td>';
