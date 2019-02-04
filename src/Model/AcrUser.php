@@ -9,7 +9,7 @@ use Auth;
 class AcrUser extends Authenticatable
 {
     use Notifiable;
-    protected $connection = 'mysql';
+    protected $connection = 'mysql4';
     protected $table      = 'users';
 
     /**

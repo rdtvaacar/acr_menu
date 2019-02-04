@@ -8,6 +8,7 @@ use Auth;
 class AcrMenu extends Model
 
 {
+    protected $connection = 'mysql4';
     /**
      * The database table used by the model.
      *
@@ -22,10 +23,5 @@ class AcrMenu extends Model
     function role()
     {
         return $this->belongsTo('Acr\Menu\Model\AcrRole');
-    }
-
-    function ust_menu()
-    {
-        return $this->hasOne('Acr\Menu\Model\AcrMenu', 'id', 'parent_id');
     }
 }

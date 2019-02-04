@@ -12,7 +12,7 @@ class AcrRole extends Model
 {
     protected $table = 'roles';
 
-    protected $connection = 'mysql';
+    protected $connection = 'mysql4';
     /**
      * The database table used by the model.
      *
